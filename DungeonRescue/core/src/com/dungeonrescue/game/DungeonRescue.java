@@ -5,7 +5,7 @@ import com.dungeonrescue.screen.AlgerieScreen;
 import com.dungeonrescue.screen.MapScreen2;
 
 /**
- * DungeonRescue est la classe qui permet de gérer la fenêtre
+ * DungeonRescue est la classe qui permet de gérer le jeu
  * Cette classe est caractérisée par les informations suivantes :
  * <ul>
  * <li>Description fonctionnelle de l'attribut 1</li>
