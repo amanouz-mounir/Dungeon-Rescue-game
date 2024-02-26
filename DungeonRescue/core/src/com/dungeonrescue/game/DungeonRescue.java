@@ -1,6 +1,7 @@
 package com.dungeonrescue.game;
 
 import com.badlogic.gdx.Game;
+import com.dungeonrescue.screen.AlgerieScreen;
 import com.dungeonrescue.screen.MapScreen2;
 
 /**
@@ -20,12 +21,15 @@ import com.dungeonrescue.screen.MapScreen2;
 public class DungeonRescue extends Game {
 
 	public static final String TITLE = "Dungeon Rescue", VERSION = "0.0.0.0" ;
+	public MapScreen2 map = new MapScreen2();
 	@Override
 	public void create () {
+		setScreen(map);
 	}
 
 	@Override
 	public void render () {
+		map.render(1);
 	}
 	
 	@Override
