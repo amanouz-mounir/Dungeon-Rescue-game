@@ -2,10 +2,10 @@ sourceCompatibility = 1.8
 sourceSets.main.java.srcDirs = [ "src/" ]
 sourceSets.main.resources.srcDirs = ["../assets"]
 
-project.ext.mainClassName = "com.dungeonrescue.game.DesktopLauncher"
+project.ext.mainClassName = "com.dungeonrescue.game.Main"
 project.ext.assetsDir = new File("../assets")
 
-import org.gradle.internal.os.OperatingSystem
+def isMacOs = System.properties['os.name'].toLowerCase().contains('mac os x')
 
 tasks.register('run', JavaExec) {
     dependsOn classes
@@ -15,7 +15,7 @@ tasks.register('run', JavaExec) {
     workingDir = project.assetsDir
     ignoreExitValue = true
 
-    if (OperatingSystem.current() == OperatingSystem.MAC_OS) {
+    if (isMacOs) {
         // Required to run on macOS
         jvmArgs += "-XstartOnFirstThread"
     }
@@ -42,7 +42,6 @@ tasks.register('dist', Jar) {
     }
     with jar
 }
-
 
 dist.dependsOn classes
 

@@ -1,6 +1,24 @@
-sourceCompatibility = 1.8
+plugins {
+    id 'java-library'
+}
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
-sourceSets.main.java.srcDirs = [ "src/" ]
+sourceSets.main.java.srcDirs = ["src/"]
 
+dependencies {
+    api "com.badlogicgames.gdx:gdx:$gdxVersion"
+    api "com.badlogicgames.gdx-controllers:gdx-controllers-core:$gdxControllersVersion"
+    api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+    api "com.badlogicgames.gdx:gdx-ai:$aiVersion"
+    implementation files('libs/gdx-1.12.1.jar')
+
+}
+
+// Configurations spécifiques au plugin Eclipse (facultatif, commentez si vous ne l'utilisez pas)
 eclipse.project.name = appName + "-core"
+
+// Ajoutez d'autres configurations spécifiques au module "core" si nécessaire

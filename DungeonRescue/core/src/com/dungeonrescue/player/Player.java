@@ -1,4 +1,77 @@
 package com.dungeonrescue.player;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
+import com.dungeonrescue.enemy.Enemy;
+import com.dungeonrescue.item.Sword;
+
 public class Player {
+
+    private float x, y;
+    private float size;
+    private Color color;
+    private boolean hasSword;
+    private Sword sword; // Ajout de l'instance de Sword
+
+    public Player(float x, float y, float size, Color color) {
+        this.x = x;
+        this.y = y;
+        this.size = size;
+        this.color = color;
+        this.hasSword = false;
+        this.sword = new Sword(x + size, y, 10, 10, Color.BLUE); // Position initiale de l'épée
+    }
+
+    public void render(ShapeRenderer shapeRenderer) {
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(color);
+        shapeRenderer.rect(x, y, size, size);
+        shapeRenderer.end();
+
+        // Dessiner l'épée si le joueur l'a
+        if (hasSword) {
+            sword.render(shapeRenderer);
+        }
+    }
+
+    public void move(float deltaX, float deltaY) {
+        x += deltaX;
+        y += deltaY;
+
+        // Mettez à jour la position de l'épée en fonction du joueur
+        sword.setX(x + size);
+        sword.setY(y);
+    }
+
+    public boolean hasSword() {
+        return hasSword;
+    }
+
+    public void setHasSword(boolean hasSword) {
+        this.hasSword = hasSword;
+    }
+
+    public Rectangle getBounds() {
+        return new Rectangle(x, y, size, size);
+    }
+
+    // Ajoutez d'autres méthodes selon les besoins
+    public void attackEnemy(Enemy enemy) {
+        if (hasSword && getBounds().overlaps(enemy.getBounds())) {
+            enemy.takeDamage(10); // À ajuster selon vos besoins
+        }
+    }
+
+    public void tryPickupSword(Sword sword) {
+        // Ramasser l'épée si elle est à proximité
+        if (sword.getBounds().overlaps(getBounds())) {
+            setHasSword(true);
+        }
+    }
+
+    public Rectangle getSwordBounds() {
+        return sword.getBounds();
+    }
+
 }

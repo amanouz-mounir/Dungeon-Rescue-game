@@ -31,11 +31,12 @@ public class MapManager implements Screen {
 
     }
 
-    public void render(float v) {
+    public void render(float delta) {
         // Logique de mise à jour et de rendu
         renderer.setView(camera);
         renderer.render();
     }
+
 
     @Override
     public void resize(int i, int i1) {
