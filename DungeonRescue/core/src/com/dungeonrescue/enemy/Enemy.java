@@ -3,6 +3,10 @@ package com.dungeonrescue.enemy;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Batch;
+
+
 
 public class Enemy {
 
@@ -12,12 +16,14 @@ public class Enemy {
     private float radius = 50; // Rayon du cercle
     private float centerX, centerY; // Coordonnées du centre du cercle
     private int health = 100; // Ajoutez cette ligne
+    protected BitmapFont font; // Ajoutez cette ligne pour déclarer la police
 
-    public Enemy(float centerX, float centerY, float width, float height) {
+    public Enemy(float centerX, float centerY, float width, float height, BitmapFont font) {
         this.centerX = centerX;
         this.centerY = centerY;
         this.width = width;
         this.height = height;
+        this.font = font;
     }
 
     public void update() {
@@ -30,6 +36,17 @@ public class Enemy {
         if (angle > 360) {
             angle -= 360; // Réinitialisez l'angle à 0 après un tour complet
         }
+    }
+
+    public void renderHealth(ShapeRenderer shapeRenderer, BitmapFont font, Batch batch) {
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(Color.RED);
+        shapeRenderer.rect(x, y - 10, width * (health / 100.0f), 5); // Barre de vie rouge
+        shapeRenderer.end();
+
+        batch.begin();
+        font.draw(batch, String.valueOf(health), x, y - 15); // Affiche les points de vie au-dessus de l'ennemi
+        batch.end();
     }
 
     public void render(ShapeRenderer shapeRenderer) {
@@ -54,8 +71,8 @@ public class Enemy {
 
     private void reset() {
         // Réinitialisez les propriétés de l'ennemi (par exemple, remettez-le à sa position de départ)
-        angle = 0;
-        health = 100; // Remettez les points de vie à la valeur initiale
+        // angle = 0;
+        // health = 100; // Remettez les points de vie à la valeur initiale
     }
 
     public float getX() {

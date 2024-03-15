@@ -67,6 +67,9 @@ public class Player {
         // Ramasser l'épée si elle est à proximité
         if (sword.getBounds().overlaps(getBounds())) {
             setHasSword(true);
+            // Mise à jour la position de l'épée pour qu'elle suive le joueur
+            sword.setX(x + size);
+            sword.setY(y);
         }
     }
 

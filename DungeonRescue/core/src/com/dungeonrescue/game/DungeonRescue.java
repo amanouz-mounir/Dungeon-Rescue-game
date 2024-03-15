@@ -19,6 +19,8 @@ import com.dungeonrescue.item.Sword;
 import com.dungeonrescue.maps.MapManager;
 import com.dungeonrescue.player.Player;
 import com.dungeonrescue.screen.MapScreen2;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,21 +42,23 @@ public class DungeonRescue extends Game {
     private BitmapFont font;
     private Batch batch;
 
+
     @Override
     public void create() {
         // Initialisation des ennemis
         player = new Player(50, 50, 20, Color.WHITE);
         enemies = new ArrayList<>();
-        enemies.add(new Enemy(100, 100, 20, 20)); // Ajouter un ennemi initial
-        enemies.add(new Enemy(300, 300, 20, 20)); // Deuxième ennemi
-        enemies.add(new Boss(100, 100, 20, 20, 100)); // Ajouter un boss initial
+        enemies.add(new Enemy(100, 100, 20, 20, font)); // Ajouter un ennemi initial
+        enemies.add(new Enemy(300, 300, 20, 20, font)); // Deuxième ennemi
+        enemies.add(new Boss(100, 100, 20, 20, 100, font, batch)); // Ajouter un boss initial
 
         // Initialisation de l'épée
         sword = new Sword(200, 200, 10, 10, Color.BLUE);
 
+
         // Charger les sons
         attackSound = Gdx.audio.newSound(Gdx.files.internal("Sounds/swinging-staff-whoosh-strong-08-44658.mp3"));
-        hitSound = Gdx.audio.newSound(Gdx.files.internal("Sounds/hit-swing-sword-small-2-95566.mp3"));
+        hitSound = Gdx.audio.newSound(Gdx.files.internal("Sounds/Roblox Death Sound (Oof) - Sound Effect (HD).mp3"));
 
         // Initialisation du ShapeRenderer
         shapeRenderer = new ShapeRenderer();
@@ -80,6 +84,7 @@ public class DungeonRescue extends Game {
         for (Enemy enemy : enemies) {
             enemy.update();
             enemy.render(shapeRenderer);
+            enemy.renderHealth(shapeRenderer, font, batch); // Passer le Batch en tant que paramètre
         }
 
         if (!player.hasSword()) {
@@ -113,9 +118,18 @@ public class DungeonRescue extends Game {
         // Ramasser l'épée quand la touche E ou e est enfoncée
         if (Gdx.input.isKeyJustPressed(Input.Keys.E) || Gdx.input.isKeyPressed(69) || Gdx.input.isKeyPressed(69)) {
             System.out.println("E key pressed");
-            handlePickupSword(); // Nouvelle méthode pour gérer le ramassage de l'épée
+            if (!player.hasSword()) {
+                player.tryPickupSword(sword); // Appel de la méthode pour ramasser l'épée
+            }
+        }
+
+        // Jouer le son d'attaque lorsque le clic gauche de la souris est enfoncé
+        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+            attackSound.play();
+            handleAttack(); // Nouvelle méthode pour gérer l'attaque
         }
     }
+
 
 
     private void handleAttack() {
