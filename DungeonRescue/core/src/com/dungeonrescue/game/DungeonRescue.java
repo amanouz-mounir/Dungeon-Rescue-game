@@ -10,16 +10,12 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.dungeonrescue.boss.Boss;
 import com.dungeonrescue.enemy.Enemy;
 import com.dungeonrescue.item.Sword;
-import com.dungeonrescue.maps.MapManager;
 import com.dungeonrescue.player.Player;
-import com.dungeonrescue.screen.MapScreen2;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.dungeonrescue.screen.AlgerieScreen;
+import com.dungeonrescue.screen.GameScreen;
 
 
 import java.util.ArrayList;
@@ -31,6 +27,7 @@ public class DungeonRescue extends Game {
 
     public static final String TITLE = "Dungeon Rescue";
     public static final String VERSION = "0.0.0.0";
+    public static final String MAINMAP = "SampleMap/samplemap.tmx";
 
     private List<Enemy> enemies;
     private ShapeRenderer shapeRenderer;
@@ -41,12 +38,15 @@ public class DungeonRescue extends Game {
 
     private BitmapFont font;
     private Batch batch;
+    private AlgerieScreen algerie;
+    private GameScreen gameScreen;
+    private float delta;
 
 
     @Override
     public void create() {
         // Initialisation des ennemis
-        player = new Player(50, 50, 20, Color.WHITE);
+        player = new Player(625, 360, 32, Color.WHITE,4f);
         enemies = new ArrayList<>();
         enemies.add(new Enemy(100, 100, 20, 20, font)); // Ajouter un ennemi initial
         enemies.add(new Enemy(300, 300, 20, 20, font)); // Deuxième ennemi
@@ -58,7 +58,7 @@ public class DungeonRescue extends Game {
 
         // Charger les sons
         attackSound = Gdx.audio.newSound(Gdx.files.internal("Sounds/swinging-staff-whoosh-strong-08-44658.mp3"));
-        hitSound = Gdx.audio.newSound(Gdx.files.internal("Sounds/Roblox Death Sound (Oof) - Sound Effect (HD).mp3"));
+        //hitSound = Gdx.audio.newSound(Gdx.files.internal("Sounds/Roblox Death Sound (Oof) - Sound Effect (HD).mp3"));
 
         // Initialisation du ShapeRenderer
         shapeRenderer = new ShapeRenderer();
@@ -69,17 +69,22 @@ public class DungeonRescue extends Game {
         // Initialisation de la police BitmapFont
         font = new BitmapFont();
 
-        setScreen(new MapScreen2());
+
+        // Initialisation de la carte
+        gameScreen = new GameScreen(MAINMAP,player);
+        algerie = new AlgerieScreen();
+        setScreen(gameScreen);
     }
 
     @Override
     public void render() {
-        Gdx.gl.glClearColor(0, 0, 0, 1); // Définir la couleur de fond
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); // Effacer le tampon graphique
-
+        // Récupérer le delta (temps écoulé depuis la dernière trame)
+        delta = Gdx.graphics.getDeltaTime();
+        //Mise à jour du jeux
         handleInput();
 
-        player.render(shapeRenderer); // Dessinez le joueur
+        gameScreen.render(delta);
+        player.render(shapeRenderer);
 
         for (Enemy enemy : enemies) {
             enemy.update();
@@ -90,10 +95,12 @@ public class DungeonRescue extends Game {
         if (!player.hasSword()) {
             sword.render(shapeRenderer);
         }
+
+
     }
 
     private void handleInput() {
-        float speed = 5f;
+        float speed = player.getVelocity();
 
         // Vérifiez quelles touches sont enfoncées et déplacez le joueur en conséquence
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
@@ -130,13 +137,11 @@ public class DungeonRescue extends Game {
         }
     }
 
-
-
     private void handleAttack() {
         for (Enemy enemy : enemies) {
             if (player.getBounds().overlaps(enemy.getBounds()) && player.hasSword()) {
                 enemy.takeDamage(10);
-                hitSound.play();
+                //hitSound.play();
             }
         }
     }
@@ -175,5 +180,6 @@ public class DungeonRescue extends Game {
         shapeRenderer.dispose();
         batch.dispose();
         font.dispose();
+        gameScreen.dispose();
     }
 }

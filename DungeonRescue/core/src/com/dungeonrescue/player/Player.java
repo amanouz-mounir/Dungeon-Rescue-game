@@ -1,11 +1,25 @@
 package com.dungeonrescue.player;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.dungeonrescue.enemy.Enemy;
 import com.dungeonrescue.item.Sword;
-
+/**
+ * Classe gérant le joueur principale
+ * Cette classe est caractérisée par les informations suivantes :
+ * <ul>
+ * <li>Description fonctionnelle de l'attribut 1</li>
+ * <li>Description fonctionnelle de l'attribut 2</li>
+ * </ul>
+ * Description des principales fonctionnalités de la classe
+ * </p>
+ * Description complémentaire, sur les attributs statiques par exemple
+ * </p>
+ * @author nom de l'auteur
+ * @version numéro de version
+ */
 public class Player {
 
     private float x, y;
@@ -13,14 +27,17 @@ public class Player {
     private Color color;
     private boolean hasSword;
     private Sword sword; // Ajout de l'instance de Sword
+    private float velocity;
 
-    public Player(float x, float y, float size, Color color) {
+    public Player(float x, float y, float size, Color color,float velocity) {
         this.x = x;
         this.y = y;
         this.size = size;
         this.color = color;
         this.hasSword = false;
         this.sword = new Sword(x + size, y, 10, 10, Color.BLUE); // Position initiale de l'épée
+        this.velocity = velocity;
+
     }
 
     public void render(ShapeRenderer shapeRenderer) {
@@ -35,6 +52,7 @@ public class Player {
         }
     }
 
+
     public void move(float deltaX, float deltaY) {
         x += deltaX;
         y += deltaY;
@@ -43,6 +61,7 @@ public class Player {
         sword.setX(x + size);
         sword.setY(y);
     }
+    public void setVelocity(float velocity){this.velocity = velocity;}
 
     public boolean hasSword() {
         return hasSword;
@@ -75,6 +94,17 @@ public class Player {
 
     public Rectangle getSwordBounds() {
         return sword.getBounds();
+    }
+
+    public float getX() {
+        return x;
+    }
+    public float getY() {
+        return y;
+    }
+    public float getVelocity(){return velocity;}
+    public void displayPosition(){
+        System.out.println("Player Position : "+x+", "+y);
     }
 
 }
