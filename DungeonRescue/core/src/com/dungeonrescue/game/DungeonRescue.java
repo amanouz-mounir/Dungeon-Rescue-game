@@ -103,16 +103,16 @@ public class DungeonRescue extends Game {
         float speed = player.getVelocity();
 
         // Vérifiez quelles touches sont enfoncées et déplacez le joueur en conséquence
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             player.move(-speed, 0);
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             player.move(speed, 0);
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             player.move(0, speed);
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
             player.move(0, -speed);
         }
 
